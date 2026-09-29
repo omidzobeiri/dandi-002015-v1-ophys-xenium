@@ -1,0 +1,12 @@
+# Python >= 3.10
+pynwb>=3.0
+hdmf>=4.0
+hdmf-zarr>=0.11
+zarr>=2.18,<3
+numcodecs
+numpy
+pandas
+matplotlib
+dandi>=0.69
+jupyterlab
+ipykernel

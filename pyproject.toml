@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "v1_ophys_xenium"
+version = "0.1.0"
+description = "Helper functions to get and read the NWB files of DANDI:002015 (mouse V1 multiplane two-photon imaging with Xenium spatial transcriptomics)"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pynwb>=3.0",
+    "hdmf>=4.0",
+    "hdmf-zarr>=0.11",
+    "zarr>=2.18,<3",
+    "numpy",
+    "pandas",
+    "dandi>=0.69",
+]
+
+[project.optional-dependencies]
+notebook = ["matplotlib", "jupyterlab", "ipykernel"]
+
+[tool.setuptools]
+packages = ["v1_ophys_xenium"]
