@@ -6,6 +6,9 @@ the dandiset, and you must set your DANDI API key in the environment:
 
     export DANDI_API_KEY=<your key>     # from https://dandiarchive.org (click your initials)
 
+In a Code Ocean capsule, attach the data assets "multimodal-nwb_<mouse>_dandi-002015".
+They mount at /data/sub-<mouse>/, and default_data_dir() returns /data.
+
 File names:
 
     sub-<mouse>/sub-<mouse>_ses-<YYYYMMDDTHHMMSS>_behavior+image+ophys.nwb.zarr   (natural-movie session)
@@ -19,6 +22,8 @@ import pandas as pd
 
 DANDISET_ID = "002015"
 VERSION = "draft"
+CODE_OCEAN_DATA = Path("/data")
+REPO_ROOT = Path(__file__).resolve().parents[1]
 _NAME = re.compile(r"sub-(?P<subject>\d+)_ses-(?P<session>\d{8}T\d{6})_(?P<suffix>[a-z+]+)\.nwb\.zarr$")
 
 
@@ -77,6 +82,29 @@ def download_sessions(paths, out_dir="data"):
 
 
 def local_sessions(root="data"):
-    """Return a table of the NWB files under root (the same columns as list_sessions, with local paths)."""
-    rows = [dict(**_parse(p), path=p) for p in sorted(Path(root).rglob("*.nwb.zarr")) if _parse(p)]
-    return pd.DataFrame(rows, columns=["subject", "session", "session_type", "path"])
+    """Return a table of the NWB files under root (the same columns as list_sessions, with local paths).
+
+    The search does not go into the .nwb.zarr folders, so it is fast on mounted data."""
+    rows = []
+    for d, dirs, _ in os.walk(root, followlinks=True):
+        for name in sorted(dirs):
+            info = _parse(name)
+            if info:
+                rows.append(dict(**info, path=Path(d) / name))
+        dirs[:] = [x for x in dirs if not x.endswith(".nwb.zarr")]   # do not walk into the zarr files
+    df = pd.DataFrame(rows, columns=["subject", "session", "session_type", "path"])
+    return df.sort_values(["subject", "session"]).reset_index(drop=True)
+
+
+def in_code_ocean():
+    """True in a Code Ocean capsule that has one or more data assets of this dataset attached."""
+    return CODE_OCEAN_DATA.is_dir() and any(CODE_OCEAN_DATA.glob("sub-*/*.nwb.zarr"))
+
+
+def default_data_dir():
+    """Folder with the NWB files: $V1OX_DATA_DIR, else /data in Code Ocean, else <repository>/data."""
+    if os.environ.get("V1OX_DATA_DIR"):
+        return Path(os.environ["V1OX_DATA_DIR"])
+    if in_code_ocean():
+        return CODE_OCEAN_DATA
+    return REPO_ROOT / "data"
