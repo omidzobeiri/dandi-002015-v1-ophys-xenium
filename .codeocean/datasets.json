@@ -1,0 +1,41 @@
+{
+	"version": 1,
+	"attached_datasets": [
+		{
+			"id": "191b9520-8ae3-4ed1-b797-b34dadceb6c1",
+			"mount": "sub-797371"
+		},
+		{
+			"id": "2d56da25-bdf5-4b9a-b968-e5e21b1b359c",
+			"mount": "sub-827542"
+		},
+		{
+			"id": "43aa21f3-e47e-4556-bc4b-352e7d56d6c4",
+			"mount": "sub-818629"
+		},
+		{
+			"id": "4a5a2948-b8dd-4112-84a8-fa80dc36cf7a",
+			"mount": "sub-810976"
+		},
+		{
+			"id": "823b1105-0b0e-47fd-889b-e26d6a9e913a",
+			"mount": "sub-816965"
+		},
+		{
+			"id": "9696f9f6-0cb1-480f-8d01-92055f852d39",
+			"mount": "sub-786297"
+		},
+		{
+			"id": "beeb472b-12ac-4bb0-a482-e990117459be",
+			"mount": "sub-778174"
+		},
+		{
+			"id": "e7d045ce-cfc2-4026-83db-fdbd06035fe3",
+			"mount": "sub-832701"
+		},
+		{
+			"id": "f7b656c7-123e-48fb-9146-ca5832615622",
+			"mount": "sub-816460"
+		}
+	]
+}

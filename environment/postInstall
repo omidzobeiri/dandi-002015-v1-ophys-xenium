@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Force zarr<3 and a compatible hdmf-zarr (0.9.0–0.13.x require zarr>=2.18.0,<3)
+pip install "zarr>=2.18.0,<3" "hdmf-zarr>=0.9.0,<0.14.0"
