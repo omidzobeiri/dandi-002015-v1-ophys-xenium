@@ -57,7 +57,7 @@ def download_sessions(paths, out_dir="data"):
 
     paths: one path or a list of paths in the dandiset (the 'path' column of
     list_sessions()), or 'sub-<mouse>' to download all 4 sessions of a mouse.
-    The files keep the dandiset layout: out_dir/002015/sub-<mouse>/<file>.
+    A file goes to out_dir/<file>; a folder goes to out_dir/sub-<mouse>/<file>.
     Files that are already downloaded are skipped.
     Returns the list of local paths.
     """
@@ -71,7 +71,9 @@ def download_sessions(paths, out_dir="data"):
     urls = [f"dandi://dandi/{DANDISET_ID}@{VERSION}/{q}" + ("" if q.endswith(".nwb.zarr") else "/")
             for q in wanted]
     download(urls, out_dir, existing="skip")
-    return [p for p in local_sessions(out_dir).path if any(q in str(p) for q in wanted)]
+    names = [Path(q).name for q in wanted]
+    return [p for p in local_sessions(out_dir).path
+            if any(p.name == n or p.name.startswith(n + "_") for n in names)]
 
 
 def local_sessions(root="data"):
