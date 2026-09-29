@@ -16,9 +16,10 @@ It gives:
 3. [Get started](#get-started)
 4. [Use the helper functions](#use-the-helper-functions)
 5. [Use the notebook](#use-the-notebook)
-6. [Important notes](#important-notes)
-7. [Build scripts](#build-scripts)
-8. [Citation and contact](#citation-and-contact)
+6. [Use Code Ocean (Allen Institute)](#use-code-ocean-allen-institute)
+7. [Important notes](#important-notes)
+8. [Build scripts](#build-scripts)
+9. [Citation and contact](#citation-and-contact)
 
 ## The dataset
 
@@ -219,12 +220,36 @@ conda activate dandi002015          # or: source .venv/bin/activate
 jupyter lab notebooks/load_multimodal_nwb.ipynb
 ```
 
-1. In the first code cell, set `DATA_DIR` (default `../data`, the `data` folder in the repository), `MOUSE` and `SESSION`.
-2. If the files of `MOUSE` are not in `DATA_DIR`, the cell downloads them (set `DANDI_API_KEY` first).
+1. In the first code cell, set `MOUSE` and `SESSION`. `DATA_DIR = vx.default_data_dir()` finds the files: the folder in `$V1OX_DATA_DIR` if it is set, else `/data` in a Code Ocean capsule, else the `data` folder in the repository.
+2. If the files of `MOUSE` are not in `DATA_DIR`, the cell downloads them (set `DANDI_API_KEY` first). In Code Ocean it does not download; it tells you which data asset to attach.
 3. Run all cells.
 
 The notebook has 7 parts: open the file; ophys data (Figure 1: field of view and coregistered ROIs); transcriptomics (Figure 2: subclasses, Figure 3: marker genes); stimulus (Figure 4: responses by subclass); behavior (Figure 5); natural movies (Figure 6); and the same cell in other sessions.
 The figure captions give the results for the default file (mouse 786297, session 2025-05-13).
+
+## Use Code Ocean (Allen Institute)
+
+In the Allen Institute Code Ocean (`codeocean.allenneuraldynamics.org`), the files are also in 9 data assets, one for each mouse. They are the same files as on DANDI, so you do not have to download 128 GB.
+
+| Data asset | Mount | Content |
+|---|---|---|
+| `multimodal-nwb_<mouse>_dandi-002015` | `/data/sub-<mouse>/` | the 4 NWB files of the mouse (`sub-<mouse>_ses-*.nwb.zarr`) |
+
+The data assets are private, like the embargoed dandiset. Ask the dataset owner to share them with you.
+
+**Make the capsule:**
+
+1. In Code Ocean, make a capsule from this Git repository (**New Capsule → Clone from Git**). The repository becomes the `/code` folder of the capsule.
+2. In **Environment**, select a Python 3.12 starter environment with JupyterLab, and add these pip packages: `pynwb`, `hdmf-zarr`, `zarr<3`, `numcodecs`, `pandas`, `matplotlib`. (`dandi` is not necessary in Code Ocean.) We tested pynwb 4.1, hdmf 6.2, hdmf-zarr 0.13 and zarr 2.18.
+3. Attach the data assets of the mice that you need (one mouse is about 13–18 GB). The files are read from the mount; nothing is copied.
+4. Open a cloud workstation with JupyterLab and run `notebooks/load_multimodal_nwb.ipynb`. The first cell finds the files in `/data` and prints `(Code Ocean)`.
+
+In your own code, use the same functions:
+
+```python
+import v1_ophys_xenium as vx
+files = vx.local_sessions(vx.default_data_dir())   # all attached sessions
+```
 
 ## Important notes
 
