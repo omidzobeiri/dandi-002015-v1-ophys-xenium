@@ -3,9 +3,9 @@
 This repository goes with the dataset [DANDI:002015](https://dandiarchive.org/dandiset/002015).
 It gives:
 
-- `v1_ophys_xenium/`: a small Python package to find, download and read the NWB files.
-- `notebooks/load_multimodal_nwb.ipynb`: a notebook that shows each part of one NWB file.
-- `build_scripts/`: the scripts that made the NWB files (for reference only; see [Build scripts](#build-scripts)).
+- `code/v1_ophys_xenium/`: a small Python package to find, download and read the NWB files.
+- `code/notebooks/load_multimodal_nwb.ipynb`: a notebook that shows each part of one NWB file.
+- `code/build_scripts/`: the scripts that made the NWB files (for reference only; see [Build scripts](#build-scripts)).
 
 > **Access.** The dandiset is embargoed until **2027-12-28**. Until that date, only users that have access to the dandiset can download the files. See [Get access and an API key](#2-get-access-and-an-api-key).
 
@@ -217,7 +217,7 @@ both = a.merge(b, on="unique_cell_id", suffixes=("_a", "_b"))
 
 ```bash
 conda activate dandi002015          # or: source .venv/bin/activate
-jupyter lab notebooks/load_multimodal_nwb.ipynb
+jupyter lab code/notebooks/load_multimodal_nwb.ipynb
 ```
 
 1. In the first code cell, set `MOUSE` and `SESSION`. `DATA_DIR = vx.default_data_dir()` finds the files: the folder in `$V1OX_DATA_DIR` if it is set, else `/data` in a Code Ocean capsule, else the `data` folder in the repository.
@@ -239,10 +239,10 @@ The data assets are private, like the embargoed dandiset. Ask the dataset owner 
 
 **Make the capsule:**
 
-1. In Code Ocean, make a capsule from this Git repository (**New Capsule → Clone from Git**). The repository becomes the `/code` folder of the capsule.
+1. In Code Ocean, make a capsule from this Git repository (**New Capsule → Clone from Git**). The `code/` folder of the repository becomes the `/code` folder of the capsule (the README and the environment files stay outside it).
 2. In **Environment**, select a Python 3.12 starter environment with JupyterLab, and add these pip packages: `pynwb`, `hdmf-zarr`, `zarr<3`, `numcodecs`, `pandas`, `matplotlib`. (`dandi` is not necessary in Code Ocean.) We tested pynwb 4.1, hdmf 6.2, hdmf-zarr 0.13 and zarr 2.18.
 3. Attach the data assets of the mice that you need (one mouse is about 13–18 GB). The files are read from the mount; nothing is copied.
-4. Open a cloud workstation with JupyterLab and run `notebooks/load_multimodal_nwb.ipynb`. The first cell finds the files in `/data` and prints `(Code Ocean)`.
+4. Open a cloud workstation with JupyterLab and run `/code/notebooks/load_multimodal_nwb.ipynb`. The first cell finds the files in `/data` and prints `(Code Ocean)`.
 
 In your own code, use the same functions:
 
@@ -265,7 +265,7 @@ files = vx.local_sessions(vx.default_data_dir())   # all attached sessions
 
 ## Build scripts
 
-The folder `build_scripts/` holds the scripts that made the files. They use internal paths and source data that are not in the dandiset, so you cannot run them as they are. We include them to show how each value in the files was made.
+The folder `code/build_scripts/` holds the scripts that made the files. They use internal paths and source data that are not in the dandiset, so you cannot run them as they are. We include them to show how each value in the files was made.
 
 - `build_multimodal_nwb.py`: makes one multimodal file from the processed ophys NWB, the stimulus table, the running, Facemap and Lightning Pose outputs, and the Xenium tables.
 - `make_ophys_nwb.py`: makes the ophys part from the per-plane processed files, for sessions where the AIND pipeline NWB has placeholder metadata or does not exist. The data are the same as in the AIND NWB.
