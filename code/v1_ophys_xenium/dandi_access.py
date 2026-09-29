@@ -23,7 +23,7 @@ import pandas as pd
 DANDISET_ID = "002015"
 VERSION = "draft"
 CODE_OCEAN_DATA = Path("/data")
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = Path(__file__).resolve().parents[2]   # the repository root (code/ is in it)
 _NAME = re.compile(r"sub-(?P<subject>\d+)_ses-(?P<session>\d{8}T\d{6})_(?P<suffix>[a-z+]+)\.nwb\.zarr$")
 
 
