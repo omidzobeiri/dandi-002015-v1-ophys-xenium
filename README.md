@@ -251,18 +251,6 @@ import v1_ophys_xenium as vx
 files = vx.local_sessions(vx.default_data_dir())   # all attached sessions
 ```
 
-## Important notes
-
-- **Coregistered set per session.** The transcriptomics tables of a file hold only the ROIs that are coregistered in that session. The set is different in each session. To find a neuron in other sessions, join on `unique_cell_id`.
-- **Only neurons.** ROIs matched to non-neuronal Xenium cells (ABC classes 30–34) are not in the tables (2,869 ROI matches in all files). The description of `processing/transcriptomics` gives the number for each file.
-- **Unmapped ROIs.** Some ROIs have a Xenium match but no cell-type mapping. They stay in the tables, with names `''` and probabilities NaN.
-- **ROI ids.** `cell_types.roi_id` is the id in the plane's `roi_table`. In `segmentation_mask_image`, label *k* is `roi_table` row *k* − 1.
-- **Plane order.** The plane number (`VISp_0` … `VISp_7`) is not in depth order. Use `plane_depths(nwb)`.
-- **Stimulus times.** The stimulus times are corrected with the monitor delay that we measured with a photodiode in each session (a shift from −0.9 to +18.6 ms, different for each session). The original times are in the `*_uncorrected` columns. The table description gives the shift.
-- **Missing behavior data.** Mice 778174 and 797371 have no pupil and no Facemap data (running speed only). The movie session of mouse 810976 has no nose region in Facemap.
-- **Bad pupil frames.** Use `pupil_is_bad_frame` (and the same series for eye and CR) to remove bad frames.
-- **Lazy data.** The trace data are read only when you index them. Keep the file open while you read.
-
 ## Build scripts
 
 The folder `code/build_scripts/` holds the scripts that made the files. They use internal paths and source data that are not in the dandiset, so you cannot run them as they are. We include them to show how each value in the files was made.
